@@ -12,7 +12,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y bc bison flex libssl-dev make ccache \
-          libncurses5-dev clang wget unzip
+          libncurses5-dev wget unzip
 
     - name: Install python2
       run: |
