@@ -21,7 +21,7 @@ jobs:
         cd Python-2.7.18
         sudo ./configure --enable-optimizations
         sudo make altinstall
-        sudo ln -s "/usr/local/bin/python2.7" "/usr/bin/python"
+        sudo ln -s "/usr/local/bin/python2.7" "/usr/bin/python2"
 
     - name: Clone Kernel Source
       run: |
