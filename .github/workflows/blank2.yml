@@ -1,0 +1,59 @@
+name: Build Sony MSM8956 Kernel (Kugo) with GCC 4.9
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Install Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y bc bison flex libssl-dev make ccache \
+          libncurses5-dev clang wget unzip \
+          python-is-python3
+
+    - name: Clone Kernel Source
+      run: |
+        git clone --depth=1 https://github.com/LineageOS/android_kernel_sony_msm8956 kernel
+
+    - name: Download GCC 4.9 Toolchain
+      run: |
+        mkdir -p ~/toolchains
+        cd ~/toolchains
+        wget https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/d1da3473b004989cd0bc389d61a26d104ff5e22a.tar.gz -O gcc49.tar.gz
+        tar -xf gcc49.tar.gz
+        echo "Toolchain extracted to ~/toolchains"
+
+    - name: Setup Kernel Config
+      run: |
+        cd kernel
+        export ARCH=arm64
+        export CROSS_COMPILE=~/toolchains/bin/aarch64-linux-android-
+
+        make loire_kugo_defconfig || make defconfig || true
+
+        scripts/config --enable CONFIG_DEBUG_KERNEL
+        scripts/config --enable CONFIG_KALLSYMS
+        scripts/config --enable CONFIG_FRAME_POINTER
+        scripts/config --disable CONFIG_STRIP_ASM_SYMS
+        scripts/config --enable CONFIG_DEBUG_INFO
+        make olddefconfig
+
+    - name: Build Kernel
+      run: |
+        cd kernel
+        export ARCH=arm64
+        export CROSS_COMPILE=~/toolchains/bin/aarch64-linux-android-
+        make -j$(nproc)
+
+    - name: Upload Kernel Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: kernel-build-output
+        path: |
+          kernel/arch/arm64/boot/Image.gz*
+          kernel/System.map
+          kernel/vmlinux
