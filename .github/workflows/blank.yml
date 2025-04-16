@@ -1,0 +1,59 @@
+name: Kernel Build for Sony MSM8956 (SO-02J / Kugo)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout this repository
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y bc bison flex libssl-dev make ccache \
+                            libncurses5-dev clang wget unzip \
+                            gcc-aarch64-linux-gnu
+
+    - name: Clone Sony Loire Kernel 3.10
+      run: |
+        git clone --depth=1 https://github.com/LineageOS/android_kernel_sony_msm8956.git kernel
+        ls -al kernel
+
+    - name: Configure Kernel
+      run: |
+        cd kernel
+        export ARCH=arm64
+        export CROSS_COMPILE=aarch64-linux-gnu-
+
+        # Jika tidak ada kugo_defconfig, gunakan loire_defconfig
+        make loire_kugo_defconfig
+
+        # Tambahkan config debug secara manual
+        scripts/config --enable CONFIG_DEBUG_KERNEL
+        scripts/config --enable CONFIG_KALLSYMS
+        scripts/config --enable CONFIG_FRAME_POINTER
+        scripts/config --disable CONFIG_STRIP_ASM_SYMS
+        scripts/config --enable CONFIG_DEBUG_INFO
+
+        make olddefconfig
+
+    - name: Build Kernel
+      run: |
+        cd kernel
+        export ARCH=arm64
+        export CROSS_COMPILE=aarch64-linux-gnu-
+        make -j$(nproc)
+
+    - name: Upload Kernel Image
+      uses: actions/upload-artifact@v3
+      with:
+        name: Kernel Image
+        path: |
+          kernel/arch/arm64/boot/Image.gz
+          kernel/arch/arm64/boot/Image.gz-dtb
+          kernel/System.map
+          kernel/vmlinux
