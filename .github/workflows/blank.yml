@@ -1,4 +1,4 @@
-halo name: Kernel Build for Sony MSM8956 (SO-02J / Kugo)
+name: Kernel Build for Sony MSM8956 (SO-02J / Kugo)
 
 on:
   workflow_dispatch:
