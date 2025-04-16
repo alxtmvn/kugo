@@ -14,9 +14,16 @@ jobs:
     - name: Install Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y python2 bc bison flex libssl-dev make ccache \
-          libncurses5-dev clang wget unzip \
-          gcc-aarch64-linux-gnu
+        sudo apt-get install -y bc bison flex libssl-dev make ccache \
+          libncurses5-dev clang wget unzip gcc-aarch64-linux-gnu \
+          python-is-python3
+
+        # Install Python 2 dari source (minimal)
+        sudo apt-get install -y libpython2-dev curl
+        curl -O https://bootstrap.pypa.io/pip/2.7/get-pip.py
+        sudo apt-get install -y python2-minimal || true
+        sudo python2 get-pip.py || true
+
 
     - name: Clone Kernel Source
       run: |
