@@ -34,7 +34,7 @@ jobs:
         wget https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/d1da3473b004989cd0bc389d61a26d104ff5e22a.tar.gz -O gcc49.tar.gz
         tar -xf gcc49.tar.gz
         echo "Toolchain extracted to ~/toolchains"
-        git clean -xfd
+        
 
     - name: Setup Kernel Config
       run: |
@@ -42,6 +42,9 @@ jobs:
         export ARCH=arm64
         export CROSS_COMPILE=~/toolchains/bin/aarch64-linux-android-
         export USE_HOST_LEX=1
+        export HOSTCC=gcc
+        unset CC
+        unset CLANG_TRIPLE
 
         make loire_kugo_defconfig || make defconfig || true
 
@@ -58,6 +61,9 @@ jobs:
         export ARCH=arm64
         export CROSS_COMPILE=~/toolchains/bin/aarch64-linux-android-
         export USE_HOST_LEX=1
+        export HOSTCC=gcc
+        unset CC
+        unset CLANG_TRIPLE
         make -j$(nproc)
 
     - name: Upload Kernel Artifacts
