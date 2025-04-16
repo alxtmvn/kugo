@@ -1,4 +1,4 @@
-name: Kernel Build for Sony MSM8956 (SO-02J / Kugo)
+halo name: Kernel Build for Sony MSM8956 (SO-02J / Kugo)
 
 on:
   workflow_dispatch:
@@ -14,7 +14,7 @@ jobs:
     - name: Install Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y bc bison flex libssl-dev make ccache \
+        sudo apt-get install -y python2 bc bison flex libssl-dev make ccache \
           libncurses5-dev clang wget unzip \
           gcc-aarch64-linux-gnu
 
