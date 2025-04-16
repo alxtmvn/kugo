@@ -8,31 +8,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout this repository
-      uses: actions/checkout@v3
+    - name: Checkout Kernel Source
+      uses: actions/checkout@v4
 
-    - name: Install dependencies
+    - name: Install Dependencies
       run: |
-        sudo apt update
-        sudo apt install -y bc bison flex libssl-dev make ccache \
-                            libncurses5-dev clang wget unzip \
-                            gcc-aarch64-linux-gnu
+        sudo apt-get update
+        sudo apt-get install -y bc bison flex libssl-dev make ccache \
+          libncurses5-dev clang wget unzip \
+          gcc-aarch64-linux-gnu
 
-    - name: Clone Sony Loire Kernel 3.10
+    - name: Clone Kernel Source
       run: |
-        git clone --depth=1 https://github.com/LineageOS/android_kernel_sony_msm8956.git kernel
+        git clone --depth=1 https://github.com/LineageOS/android_kernel_sony_msm8956 kernel
         ls -al kernel
 
-    - name: Configure Kernel
+    - name: Setup Build Config
       run: |
         cd kernel
         export ARCH=arm64
         export CROSS_COMPILE=aarch64-linux-gnu-
 
-        # Jika tidak ada kugo_defconfig, gunakan loire_defconfig
+        # Gunakan defconfig dasar jika tidak tersedia
         make loire_kugo_defconfig
 
-        # Tambahkan config debug secara manual
+        # Tambahkan opsi debug
         scripts/config --enable CONFIG_DEBUG_KERNEL
         scripts/config --enable CONFIG_KALLSYMS
         scripts/config --enable CONFIG_FRAME_POINTER
@@ -41,17 +41,17 @@ jobs:
 
         make olddefconfig
 
-    - name: Build Kernel
+    - name: Compile Kernel
       run: |
         cd kernel
         export ARCH=arm64
         export CROSS_COMPILE=aarch64-linux-gnu-
         make -j$(nproc)
 
-    - name: Upload Kernel Image
-      uses: actions/upload-artifact@v3
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
       with:
-        name: Kernel Image
+        name: kernel-build-output
         path: |
           kernel/arch/arm64/boot/Image.gz
           kernel/arch/arm64/boot/Image.gz-dtb
