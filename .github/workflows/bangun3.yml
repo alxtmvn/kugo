@@ -61,7 +61,7 @@ jobs:
       run: |
         cd kernel
         export ARCH=arm64
-        export PATH=$GITHUB_WORKSPACE/toolchains/aarch64-linux-android-4.9/bin:$HOME/toolchains/bin/aarch64-linux-android-:$PATH
+        export PATH=$GITHUB_WORKSPACE/toolchains/bin:$HOME/toolchains/bin/aarch64-linux-android-:$PATH
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
         export USE_HOST_LEX=1
         export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
@@ -69,7 +69,7 @@ jobs:
         unset CC
         unset CLANG_TRIPLE
         echo $HOME
-        ls -!a $HOME
+        ls -la $HOME
         echo $GITHUB_WORKSPACE 
         ls -la $GITHUB_WORKSPACE 
         ls -la $GITHUB_WORKSPACE/toolchains
