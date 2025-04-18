@@ -32,6 +32,7 @@ jobs:
         git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchains
         cd toolchains
         git checkout 357ead66eff30a77b2b752595d4df09fb56e23f0
+        ls -la
         echo "Toolchain extracted to ~/toolchains"
         
 
@@ -79,7 +80,7 @@ jobs:
         gcc -v
         which aarch64-linux-android-gcc
         $CROSS_COMPILE"gcc" -v
-        make CC=$GITHUB_WORKSPACE/toolchains/aarch64-linux-android-4.9/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ -j$(nproc) 
+        make CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ -j$(nproc) 
 
     - name: Upload Kernel Artifacts
       uses: actions/upload-artifact@v4
