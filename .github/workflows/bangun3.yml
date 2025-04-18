@@ -69,8 +69,8 @@ jobs:
         unset CC
         unset CLANG_TRIPLE
         echo $HOME
+        ls -!a $HOME
         echo $GITHUB_WORKSPACE 
-        ls -la $HOME
         ls -la $GITHUB_WORKSPACE 
         env
         ls -l $GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc
@@ -78,7 +78,7 @@ jobs:
         gcc -v
         which aarch64-linux-android-gcc
         $CROSS_COMPILE"gcc" -v
-        make CC=${CROSS_COMPILE}gcc HOSTCC=gcc HOSTCXX=g++ -j$(nproc) 
+        make CC=$GITHUB_WORKSPACE/toolchains/aarch64-linux-android-4.9/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ -j$(nproc) 
 
     - name: Upload Kernel Artifacts
       uses: actions/upload-artifact@v4
