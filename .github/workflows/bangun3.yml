@@ -72,6 +72,7 @@ jobs:
         ls -!a $HOME
         echo $GITHUB_WORKSPACE 
         ls -la $GITHUB_WORKSPACE 
+        ls -la $GITHUB_WORKSPACE/toolchains
         env
         ls -l $GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc
         which gcc
