@@ -89,7 +89,8 @@ jobs:
         which aarch64-linux-android-gcc
         echo "cek versi gcc android"
         $CROSS_COMPILE"gcc" -v
-        make CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) -V=1 
+        make mrproper
+        make CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=1 
 
     - name: Upload Kernel Artifacts
       uses: actions/upload-artifact@v4
