@@ -1,0 +1,80 @@
+name: Bangun 3 Sony MSM8956 Kernel (Kugo) with GCC 4.9
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y bc bison flex libssl-dev make ccache \
+          libncurses5-dev wget unzip
+
+    - name: Install python2
+      run: |
+        wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
+        tar xzf Python-2.7.18.tgz
+        cd Python-2.7.18
+        sudo ./configure --enable-optimizations
+        sudo make altinstall
+        sudo ln -s "/usr/local/bin/python2.7" "/usr/bin/python2"
+
+    - name: Clone Kernel Source
+      run: |
+        git clone --depth=1 https://github.com/sonyxperiadev/kernel-copyleft -b 34.4.B.0.xxx kernel
+
+    - name: Download GCC 4.9 Toolchain
+      run: |
+        git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchains
+        cd ~/toolchains
+        git checkout 357ead66eff30a77b2b752595d4df09fb56e23f0
+        echo "Toolchain extracted to ~/toolchains"
+        
+
+    - name: Setup Kernel Config
+      run: |
+        cd kernel
+        export PATH=~/toolchains/aarch64-linux-android/bin:~/toolchains/bin/aarch64-linux-android-:$PATH
+        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
+        export ARCH=arm64
+        export CROSS_COMPILE=~/toolchains/bin/aarch64-linux-android-
+        export USE_HOST_LEX=1
+        export HOSTCC=gcc
+        unset CC
+        unset CLANG_TRIPLE
+        gcc -v
+        make msm-perf_defconfig
+        
+
+        scripts/config --enable CONFIG_DEBUG_KERNEL
+        scripts/config --enable CONFIG_KALLSYMS
+        scripts/config --enable CONFIG_FRAME_POINTER
+        scripts/config --disable CONFIG_STRIP_ASM_SYMS
+        scripts/config --enable CONFIG_DEBUG_INFO
+        make olddefconfig
+
+    - name: Build Kernel
+      run: |
+        cd kernel
+        export ARCH=arm64
+        export PATH=~/toolchains/aarch64-linux-android-4.9/bin:$PATH
+        export CROSS_COMPILE=~/toolchains/bin/aarch64-linux-android-
+        export USE_HOST_LEX=1
+        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
+        export HOSTCC=gcc
+        unset CC
+        unset CLANG_TRIPLE
+        make -j$(nproc)
+
+    - name: Upload Kernel Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: kernel-build-output
+        path: |
+          kernel/arch/arm64/boot/Image.gz*
+          kernel/System.map
+          kernel/vmlinux
