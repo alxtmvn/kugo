@@ -38,7 +38,7 @@ jobs:
     - name: Setup Kernel Config
       run: |
         cd kernel
-        export PATH=$GITHUB_WORKSPACE/toolchains/aarch64-linux-android/bin:$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-:$PATH
+        export PATH=~/toolchains/aarch64-linux-android/bin:~/toolchains/bin/aarch64-linux-android-:$PATH
         export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
         export ARCH=arm64
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
@@ -68,6 +68,8 @@ jobs:
         export HOSTCC=gcc
         unset CC
         unset CLANG_TRIPLE
+        echo $HOME
+        echo $GITHUB_WORKSPACE 
         ls -l $GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc
         which gcc
         gcc -v
