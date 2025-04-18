@@ -38,10 +38,10 @@ jobs:
     - name: Setup Kernel Config
       run: |
         cd kernel
-        export PATH=~/toolchains/aarch64-linux-android/bin:~/toolchains/bin/aarch64-linux-android-:$PATH
+        export PATH=$GITHUB_WORKSPACE/toolchains/aarch64-linux-android/bin:$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-:$PATH
         export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
         export ARCH=arm64
-        export CROSS_COMPILE=~/toolchains/bin/aarch64-linux-android-
+        export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
         export USE_HOST_LEX=1
         export HOSTCC=gcc
         unset CC
@@ -61,14 +61,19 @@ jobs:
       run: |
         cd kernel
         export ARCH=arm64
-        export PATH=~/toolchains/aarch64-linux-android-4.9/bin:$PATH
-        export CROSS_COMPILE=~/toolchains/bin/aarch64-linux-android-
+        export PATH=$GITHUB_WORKSPACE/toolchains/aarch64-linux-android-4.9/bin:$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-:$PATH
+        export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
         export USE_HOST_LEX=1
         export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
         export HOSTCC=gcc
         unset CC
         unset CLANG_TRIPLE
-        make -j$(nproc)
+        ls -l $GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc
+        which gcc
+        gcc -v
+        which aarch64-linux-android-gcc
+        $CROSS_COMPILE"gcc" -v
+        make CC=${CROSS_COMPILE}gcc HOSTCC=gcc HOSTCXX=g++ -j$(nproc) 
 
     - name: Upload Kernel Artifacts
       uses: actions/upload-artifact@v4
