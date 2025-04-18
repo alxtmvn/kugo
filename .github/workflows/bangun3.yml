@@ -67,6 +67,7 @@ jobs:
         export USE_HOST_LEX=1
         export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
         export HOSTCC=gcc
+        export HOSTLDFLAGS="-fcommon"
         unset CC
         unset CLANG_TRIPLE
         echo $HOME
@@ -80,7 +81,7 @@ jobs:
         gcc -v
         which aarch64-linux-android-gcc
         $CROSS_COMPILE"gcc" -v
-        make CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ -j$(nproc) 
+        make CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) 
 
     - name: Upload Kernel Artifacts
       uses: actions/upload-artifact@v4
