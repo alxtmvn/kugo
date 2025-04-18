@@ -68,20 +68,28 @@ jobs:
         export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
         export HOSTCC=gcc
         export HOSTLDFLAGS="-fcommon"
+        export LD=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-ld
         unset CC
         unset CLANG_TRIPLE
-        echo $HOME
+        echo "Path Rumah: " && echo $HOME
         ls -la $HOME
-        echo $GITHUB_WORKSPACE 
+        echo "Path workspace: " && echo $GITHUB_WORKSPACE 
         ls -la $GITHUB_WORKSPACE 
-        ls -la $GITHUB_WORKSPACE/toolchains
+        echo "isi folder toolchains"
+        ls -la $GITHUB_WORKSPACE/toolchains 
+        echo "Daftar Environment"
         env
+        echo "Cek GCC di folder toolchains"
         ls -l $GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc
+        echo "cek which gcc"
         which gcc
+        echo "cek versi gcc"
         gcc -v
+        echo "cek which gcc android"
         which aarch64-linux-android-gcc
+        echo "cek versi gcc android"
         $CROSS_COMPILE"gcc" -v
-        make CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) 
+        make CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) -V=1 
 
     - name: Upload Kernel Artifacts
       uses: actions/upload-artifact@v4
