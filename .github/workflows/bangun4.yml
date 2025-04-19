@@ -23,6 +23,16 @@ jobs:
         sudo make altinstall
         sudo ln -s "/usr/local/bin/python2.7" "/usr/bin/python2"
 
+    - name: Archive Python 2
+      run: |
+        tar -czf python2.tar.gz /usr/local/bin/python2.7 /usr/local/lib/python2.7 /usr/local/include/python2.7
+
+    - name: Upload Python2 Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: python2
+        path: python2.tar.gz
+
     - name: Clone Kernel Source
       run: |
         git clone --depth=1 https://github.com/sonyxperiadev/kernel-copyleft -b 34.4.B.0.xxx kernel
@@ -91,18 +101,31 @@ jobs:
         which clang || echo "clang not found"
         make CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=1 2>&1 | tee build.log
 
+    - name: Debug output
+      run: |
+        echo "Current path: $PWD"
+        find $GITHUB_WORKSPACE/kernel/arch/arm64/boot -type f
+        ls -lh $GITHUB_WORKSPACE/kernel/arch/arm64/boot/
+        ls -lh $GITHUB_WORKSPACE/kernel/
+
     - name: Upload Build Log
       uses: actions/upload-artifact@v4
       with:
         name: kernel-build-log
         path: kernel/build.log
 
+
     - name: Upload Kernel Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: kernel-build-output
         path: |
-          kernel/arch/arm64/boot/Image.gz*
-          kernel/System.map
-          kernel/vmlinux
+          $GITHUB_WORKSPACE/kernel/arch/arm64/boot/Image.gz*
+          $GITHUB_WORKSPACE/kernel/System.map
+          $GITHUB_WORKSPACE/kernel/vmlinux
 
+    - name: Cache built kernel
+      uses: actions/cache@v4
+      with:
+        path: kernel/arch/arm64/boot/
+        key: ${{ runner.os }}-kernel-${{ hashFiles('**/Makefile') }}
