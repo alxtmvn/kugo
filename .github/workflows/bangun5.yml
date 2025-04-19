@@ -1,4 +1,4 @@
-name: Bangun 5 Sony MSM8956 Kernel (Kugo) with GCC 4.9
+name: Bangun 4 Sony MSM8956 Kernel (Kugo) with GCC 4.9
 
 on:
   workflow_dispatch:
@@ -23,10 +23,6 @@ jobs:
         sudo make altinstall
         sudo ln -s "/usr/local/bin/python2.7" "/usr/bin/python2"
 
-    - name: Archive Python 2
-      run: |
-        tar -czf python2.tar.gz /usr/local/bin/python2.7 /usr/local/lib/python2.7 /usr/local/include/python2.7
-
 
 
     - name: Clone Kernel Source
@@ -44,14 +40,12 @@ jobs:
     - name: Setup Kernel Config
       run: |
         cd kernel
-        export PATH=$GITHUB_WORKSPACE/toolchains/aarch64-linux-android/bin:~/toolchains/bin/aarch64-linux-android-:$PATH
+        export PATH=~/toolchains/aarch64-linux-android/bin:~/toolchains/bin/aarch64-linux-android-:$PATH
         export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
         export ARCH=arm64
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
         export USE_HOST_LEX=1
         export HOSTCC=gcc
-        export HOSTLDFLAGS="-fcommon"
-        export LD=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-ld
         unset CC
         unset CLANG_TRIPLE
         gcc -v
@@ -66,7 +60,7 @@ jobs:
         scripts/config --disable CONFIG_STRIP_ASM_SYMS
         scripts/config --enable CONFIG_DEBUG_INFO
         make olddefconfig
-        make O=./out CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc)
+        make O=./out
 
     - name: Build Kernel
       run: |
