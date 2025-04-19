@@ -1,0 +1,133 @@
+name: Bangun 5 Sony MSM8956 Kernel (Kugo) with GCC 4.9
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y bc bison flex libssl-dev make ccache \
+          libncurses5-dev wget unzip
+
+    - name: Install python2
+      run: |
+        wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
+        tar xzf Python-2.7.18.tgz
+        cd Python-2.7.18
+        sudo ./configure --enable-optimizations
+        sudo make altinstall
+        sudo ln -s "/usr/local/bin/python2.7" "/usr/bin/python2"
+
+    - name: Archive Python 2
+      run: |
+        tar -czf python2.tar.gz /usr/local/bin/python2.7 /usr/local/lib/python2.7 /usr/local/include/python2.7
+
+
+
+    - name: Clone Kernel Source
+      run: |
+        git clone --depth=1 https://github.com/sonyxperiadev/kernel-copyleft -b 34.4.B.0.xxx kernel
+
+    - name: Download GCC 4.9 Toolchain
+      run: |
+        git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-8.0.0_r51 toolchains
+        cd toolchains
+        ls -la
+        echo "Toolchain extracted to ~/toolchains"
+        
+
+    - name: Setup Kernel Config
+      run: |
+        cd kernel
+        export PATH=$GITHUB_WORKSPACE/toolchains/aarch64-linux-android/bin:~/toolchains/bin/aarch64-linux-android-:$PATH
+        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
+        export ARCH=arm64
+        export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
+        export USE_HOST_LEX=1
+        export HOSTCC=gcc
+        unset CC
+        unset CLANG_TRIPLE
+        gcc -v
+        mkdir -p out
+        
+        make msm-perf_defconfig O=./out
+        
+
+        scripts/config --enable CONFIG_DEBUG_KERNEL
+        scripts/config --enable CONFIG_KALLSYMS
+        scripts/config --enable CONFIG_FRAME_POINTER
+        scripts/config --disable CONFIG_STRIP_ASM_SYMS
+        scripts/config --enable CONFIG_DEBUG_INFO
+        make olddefconfig
+        make O=./out
+
+    - name: Build Kernel
+      run: |
+        cd kernel
+        export ARCH=arm64
+        export PATH=$GITHUB_WORKSPACE/toolchains/bin:$HOME/toolchains/bin/aarch64-linux-android-:$PATH
+        export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
+        export USE_HOST_LEX=1
+        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
+        export HOSTCC=gcc
+        export HOSTLDFLAGS="-fcommon"
+        export LD=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-ld
+        unset CC
+        unset CLANG_TRIPLE
+        echo "===Path Rumah: ===" && echo $HOME
+        ls -la $HOME
+        echo "===Path workspace: ===" && echo $GITHUB_WORKSPACE 
+        ls -la $GITHUB_WORKSPACE 
+        echo "===isi folder toolchains==="
+        ls -la $GITHUB_WORKSPACE/toolchains 
+        echo "===Daftar Environment==="
+        env
+        echo "===)Cek GCC di folder toolchains==="
+        ls -l $GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc
+        echo "===cek which gcc==="
+        which gcc
+        echo "===cek versi gcc==="
+        gcc -v
+        echo "===cek which gcc android==="
+        which aarch64-linux-android-gcc
+        echo "===cek versi gcc android==="
+        $CROSS_COMPILE"gcc" -v
+        which clang || echo "clang not found"
+        make Image.gz vmlinux dtbs modules CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=1 2>&1 | tee build.log
+
+    - name: Debug output
+      run: |
+        echo "Current path: $PWD"
+        find $GITHUB_WORKSPACE/kernel/arch/arm64/boot -type f
+        ls -lh $GITHUB_WORKSPACE/kernel/arch/arm64/boot/
+        ls -lh $GITHUB_WORKSPACE/kernel/
+
+    - name: Upload Build Log
+      uses: actions/upload-artifact@v4
+      with:
+        name: kernel-build-log
+        path: kernel/build.log
+
+
+    - name: Upload Kernel Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: kernel-build-output
+        path: |
+          $GITHUB_WORKSPACE/kernel/arch/arm64/boot/Image*
+          $GITHUB_WORKSPACE/kernel/System.map
+          $GITHUB_WORKSPACE/kernel/vmlinux
+          kernel/*.ko
+          kernel/**/*.ko
+          kernel/**/*.dtb*
+
+    - name: Cache built kernel
+      uses: actions/cache@v4
+      with:
+        path: kernel/arch/arm64/boot/
+        key: ${{ runner.os }}-kernel-${{ hashFiles('**/Makefile') }}
