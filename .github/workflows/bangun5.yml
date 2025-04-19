@@ -60,9 +60,8 @@ jobs:
         scripts/config --enable CONFIG_FRAME_POINTER
         scripts/config --disable CONFIG_STRIP_ASM_SYMS
         scripts/config --enable CONFIG_DEBUG_INFO
-        make mrproper
         make olddefconfig
-        make O=./out
+        
 
     - name: Build Kernel
       run: |
@@ -96,7 +95,7 @@ jobs:
         echo "===cek versi gcc android==="
         $CROSS_COMPILE"gcc" -v
         which clang || echo "clang not found"
-        make Image.gz vmlinux dtbs modules CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=1 2>&1 | tee build.log
+        make O=./out CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=1 2>&1 | tee build.log
 
     - name: Debug output
       run: |
