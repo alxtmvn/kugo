@@ -88,7 +88,14 @@ jobs:
         which aarch64-linux-android-gcc
         echo "===cek versi gcc android==="
         $CROSS_COMPILE"gcc" -v
-        make CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=1 
+        which clang || echo "clang not found"
+        make CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=1 2>&1 | tee build.log
+
+    - name: Upload Build Log
+      uses: actions/upload-artifact@v4
+      with:
+        name: kernel-build-log
+        path: kernel/build.log
 
     - name: Upload Kernel Artifacts
       uses: actions/upload-artifact@v4
