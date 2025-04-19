@@ -60,6 +60,7 @@ jobs:
         scripts/config --disable CONFIG_STRIP_ASM_SYMS
         scripts/config --enable CONFIG_DEBUG_INFO
         make olddefconfig
+        make mrproper
         make O=./out
 
     - name: Build Kernel
@@ -102,6 +103,7 @@ jobs:
         find $GITHUB_WORKSPACE/kernel/arch/arm64/boot -type f
         ls -lh $GITHUB_WORKSPACE/kernel/arch/arm64/boot/
         ls -lh $GITHUB_WORKSPACE/kernel/
+        ls -lh $GITHUB_WORKSPACE/kernel/out/
 
     - name: Upload Build Log
       uses: actions/upload-artifact@v4
@@ -117,7 +119,9 @@ jobs:
         path: |
           $GITHUB_WORKSPACE/kernel/arch/arm64/boot/Image*
           $GITHUB_WORKSPACE/kernel/System.map
+          GITHUB_WORKSPACE/kernel/out/System.map
           $GITHUB_WORKSPACE/kernel/vmlinux
+          GITHUB_WORKSPACE/kernel/out/vmlinux
           kernel/*.ko
           kernel/**/*.ko
           kernel/**/*.dtb*
