@@ -46,6 +46,7 @@ jobs:
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
         export USE_HOST_LEX=1
         export HOSTCC=gcc
+        export LD=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-ld
         unset CC
         unset CLANG_TRIPLE
         gcc -v
@@ -59,8 +60,8 @@ jobs:
         scripts/config --enable CONFIG_FRAME_POINTER
         scripts/config --disable CONFIG_STRIP_ASM_SYMS
         scripts/config --enable CONFIG_DEBUG_INFO
-        make olddefconfig
         make mrproper
+        make olddefconfig
         make O=./out
 
     - name: Build Kernel
