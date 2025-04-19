@@ -104,7 +104,7 @@ jobs:
         ls -lh $GITHUB_WORKSPACE/kernel/arch/arm64/boot/
         ls -lh $GITHUB_WORKSPACE/kernel/
         ls -lh $GITHUB_WORKSPACE/kernel/out/
-        la -lh $GITHUB_WORKSPACE
+        ls -lh $GITHUB_WORKSPACE
 
     - name: Upload Full Kernel Folder
       uses: actions/upload-artifact@v4
