@@ -41,7 +41,7 @@ jobs:
       run: |
         cd kernel
         export PATH=~/toolchains/aarch64-linux-android/bin:~/toolchains/bin/aarch64-linux-android-:$PATH
-        echo "export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig"
+        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
         export ARCH=arm64
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
         echo "export USE_HOST_LEX=1"
@@ -71,7 +71,7 @@ jobs:
         export PATH=$GITHUB_WORKSPACE/toolchains/bin:$HOME/toolchains/bin/aarch64-linux-android-:$PATH
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
         echo "export USE_HOST_LEX=1"
-        echo "export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig"
+        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
         export HOSTCC=gcc
         export HOSTLDFLAGS="-fcommon"
         export LD=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-ld
@@ -96,7 +96,8 @@ jobs:
         echo "===cek versi gcc android==="
         $CROSS_COMPILE"gcc" -v
         which clang || echo "clang not found"
-        make O=./out CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=1 2>&1 | tee build.log
+        echo "make O=./out CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=1 2>&1 | tee build.log"
+        bash install.sh
 
     - name: Debug output
       run: |
