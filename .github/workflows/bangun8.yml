@@ -31,10 +31,10 @@ jobs:
 
     - name: Download GCC 4.9 Toolchain
       run: |
-        mkdir -p toolchains
-        cd toolchains
         wget https://releases.linaro.org/components/toolchain/binaries/latest-4/aarch64-linux-gnu/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu.tar.xz -O gcc49.tar.xz
         tar -xf gcc49.tar.xz
+        mv gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu toolchains
+        cd toolchains
         ls -ln
         ls -la bin
         echo "Toolchain extracted to ~/toolchains"
@@ -43,15 +43,16 @@ jobs:
     - name: Setup Kernel Config
       run: |
         cd kernel
-        export PATH=~/toolchains/aarch64-linux-android/bin:~/toolchains/bin/aarch64-linux-android-:$PATH
+        export PATH=$GITHUB_WORKSPACE/toolchains/bin:$PATH
         export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
         export ARCH=arm64
-        export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
+        export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-
         export USE_HOST_LEX=1
         export HOSTCC=gcc
-        export LD=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-ld
+        export LD=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-ld
         unset CC
         unset CLANG_TRIPLE
+        make mrproper
         gcc -v
         mkdir -p out
         
@@ -70,15 +71,15 @@ jobs:
       run: |
         cd kernel
         export ARCH=arm64
-        export PATH=$GITHUB_WORKSPACE/toolchains/bin:$HOME/toolchains/bin/aarch64-linux-android-:$PATH
-        export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
+        export PATH=$GITHUB_WORKSPACE/toolchains/bin:$PATH
+        export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-
         export USE_HOST_LEX=1
         export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
         export HOSTCC=gcc
         export HOSTLDFLAGS="-fcommon"
-        export LD=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-ld
-        export CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
-        export CLANG_TRIPLE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-E
+        export LD=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-ld
+        export CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-
+        export CLANG_TRIPLE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-
         echo "===Path Rumah: ===" && echo $HOME
         ls -la $HOME
         echo "===Path workspace: ===" && echo $GITHUB_WORKSPACE 
@@ -88,17 +89,17 @@ jobs:
         echo "===Daftar Environment==="
         env
         echo "===)Cek GCC di folder toolchains==="
-        ls -l $GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc
+        ls -l $GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc
         echo "===cek which gcc==="
         which gcc
         echo "===cek versi gcc==="
         gcc -v
         echo "===cek which gcc android==="
-        which aarch64-linux-android-gcc
+        which aarch64-linux-gnu-gcc
         echo "===cek versi gcc android==="
         $CROSS_COMPILE"gcc" -v
         which clang || echo "clang not found"
-        make O=./out CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=1 2>&1 | tee build.log
+        make O=./out CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=1 2>&1 | tee build.log
 
     - name: Debug output
       run: |
