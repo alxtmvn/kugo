@@ -41,10 +41,10 @@ jobs:
       run: |
         cd kernel
         export PATH=~/toolchains/aarch64-linux-android/bin:~/toolchains/bin/aarch64-linux-android-:$PATH
-        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
+        echo "export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig"
         export ARCH=arm64
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
-        export USE_HOST_LEX=1
+        echo "export USE_HOST_LEX=1"
         export HOSTCC=gcc
         export LD=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-ld
         unset CC
@@ -70,8 +70,8 @@ jobs:
         export ARCH=arm64
         export PATH=$GITHUB_WORKSPACE/toolchains/bin:$HOME/toolchains/bin/aarch64-linux-android-:$PATH
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-
-        export USE_HOST_LEX=1
-        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
+        echo "export USE_HOST_LEX=1"
+        echo "export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig"
         export HOSTCC=gcc
         export HOSTLDFLAGS="-fcommon"
         export LD=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-ld
