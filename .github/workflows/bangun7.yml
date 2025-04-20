@@ -97,7 +97,7 @@ jobs:
         $CROSS_COMPILE"gcc" -v
         which clang || echo "clang not found"
         echo "make O=./out CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-android-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=1 2>&1 | tee build.log"
-        bash install.sh
+        make O=out -j$(nproc)
 
     - name: Debug output
       run: |
