@@ -15,8 +15,9 @@ jobs:
           libncurses5-dev wget unzip
 
     - name: Download Python2 Artifact
-      run: | 
-     	wget https://github.com/alxtmvn/kugo/actions/runs/14563047114/artifacts/2976547921
+      run: |
+     		wget https://github.com/alxtmvn/kugo/actions/runs/14563047114/artifacts/2976547921
+       
 
     - name: Extract Python2
       run: |
