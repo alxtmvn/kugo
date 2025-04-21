@@ -54,9 +54,8 @@ jobs:
         unset CLANG_TRIPLE
         make mrproper
         gcc -v
-        mkdir -p out
         
-        make msm-perf_defconfig O=./out
+        make msm-perf_defconfig
         
 
         scripts/config --enable CONFIG_DEBUG_KERNEL
@@ -64,7 +63,7 @@ jobs:
         scripts/config --enable CONFIG_FRAME_POINTER
         scripts/config --disable CONFIG_STRIP_ASM_SYMS
         scripts/config --enable CONFIG_DEBUG_INFO
-        make O=./out olddefconfig
+        make olddefconfig
         
 
     - name: Build Kernel
@@ -99,8 +98,7 @@ jobs:
         echo "===cek versi gcc android==="
         $CROSS_COMPILE"gcc" -v
         which clang || echo "clang not found"
-        git clean -xfd
-        make O=./out CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=1 2>&1 | tee build.log
+        make zImage CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=1 2>&1 | tee build.log
 
     - name: Debug output
       run: |
