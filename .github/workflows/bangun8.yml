@@ -55,8 +55,8 @@ jobs:
         git clean -xfd
         make mrproper
         gcc -v
-        
-        make msm-perf_defconfig
+        mkdir -p out
+        make O=out msm-perf_defconfig
         
 
         scripts/config --enable CONFIG_DEBUG_KERNEL
@@ -64,7 +64,7 @@ jobs:
         scripts/config --enable CONFIG_FRAME_POINTER
         scripts/config --disable CONFIG_STRIP_ASM_SYMS
         scripts/config --enable CONFIG_DEBUG_INFO
-        make olddefconfig
+        make O=out olddefconfig
         
 
     - name: Build Kernel
@@ -99,7 +99,7 @@ jobs:
         echo "===cek versi gcc android==="
         $CROSS_COMPILE"gcc" -v
         which clang || echo "clang not found"
-        make Image CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=0 2>&1 | tee build.log
+        make O=out Image CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=0 2>&1 | tee build.log
 
     - name: Debug output
       run: |
@@ -107,7 +107,7 @@ jobs:
         find $GITHUB_WORKSPACE/kernel/arch/arm64/boot -type f
         ls -lh $GITHUB_WORKSPACE/kernel/arch/arm64/boot/
         ls -lh $GITHUB_WORKSPACE/kernel/
-        echo "ls -lh $GITHUB_WORKSPACE/kernel/out/"
+        ls -lh $GITHUB_WORKSPACE/kernel/out
         ls -lh $GITHUB_WORKSPACE
 
 
