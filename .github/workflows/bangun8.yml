@@ -61,11 +61,11 @@ jobs:
 
         ls -l $GITHUB_WORKSPACE/out/.config
 
-        scripts/config --enable CONFIG_DEBUG_KERNEL
-        scripts/config --enable CONFIG_KALLSYMS
-        scripts/config --enable CONFIG_FRAME_POINTER
-        scripts/config --disable CONFIG_STRIP_ASM_SYMS
-        scripts/config --enable CONFIG_DEBUG_INFO
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_DEBUG_KERNEL
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_KALLSYMS
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_FRAME_POINTER
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_STRIP_ASM_SYMS
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_DEBUG_INFO
         make O=$GITHUB_WORKSPACE/out olddefconfig
 
     - name: Build Kernel
