@@ -45,7 +45,7 @@ jobs:
       run: |
         cd kernel
         export PATH=$GITHUB_WORKSPACE/toolchains/bin:$PATH
-        echo "export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig"
+        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
         export ARCH=arm64
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-
         export USE_HOST_LEX=1
@@ -75,7 +75,7 @@ jobs:
         export PATH=$GITHUB_WORKSPACE/toolchains/bin:$PATH
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-
         export USE_HOST_LEX=0
-        echo "export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig"
+        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
         export KBUILD_OUTPUT=$GITHUB_WORKSPACE/out
         export HOSTCC=gcc
         export HOSTLDFLAGS="-fcommon"
@@ -102,7 +102,7 @@ jobs:
         $CROSS_COMPILE"gcc" -v
         which clang || echo "clang not found" 
         echo "make mrproper"
-        make O=$GITHUB_WORKSPACE/out ARCH=arm64 CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu- CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCC=/usr/bin/gcc HOSTCXX=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=0 2>&1 | tee build.log
+        make O=$GITHUB_WORKSPACE/out ARCH=arm64 CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu- CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCC=/usr/bin/gcc HOSTCXX=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -f -j$(nproc) V=0 2>&1 | tee build.log
 
     - name: Debug output
       run: |
@@ -135,7 +135,7 @@ jobs:
           kernel/*.ko
           kernel/**/*.ko
           kernel/**/*.dtb* 
-          $GITHUB_WORKSPACE/out
+          out/
 
 
 
