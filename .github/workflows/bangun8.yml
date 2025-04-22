@@ -58,7 +58,8 @@ jobs:
         make mrproper
         
         make O=$GITHUB_WORKSPACE/out msm-perf_defconfig
-        
+
+        ls -l $GITHUB_WORKSPACE/out/.config
 
         scripts/config --enable CONFIG_DEBUG_KERNEL
         scripts/config --enable CONFIG_KALLSYMS
