@@ -65,7 +65,7 @@ jobs:
         scripts/config --disable CONFIG_STRIP_ASM_SYMS
         scripts/config --enable CONFIG_DEBUG_INFO
         make O=$GITHUB_WORKSPACE/out olddefconfig
-        
+        cp -r $GITHUB_WORKSPACE/scripts/kconfig $GITHUB_WORKSPACE/
 
     - name: Build Kernel
       run: |
@@ -99,8 +99,11 @@ jobs:
         echo "===cek versi gcc android==="
         $CROSS_COMPILE"gcc" -v
         which clang || echo "clang not found" 
+        make mrproper
+        make O=$GITHUB_WORKSPACE/out mrproper
         make O=$GITHUB_WORKSPACE/out prepare
         make O=$GITHUB_WORKSPACE/out scripts
+        cp -r $GITHUB_WORKSPACE/kconfig $GITHUB_WORKSPACE/out/scripts/kconfig
         make O=$GITHUB_WORKSPACE/out Image CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCC=/usr/bin/gcc HOSTCXX=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=0 2>&1 | tee build.log
 
     - name: Debug output
