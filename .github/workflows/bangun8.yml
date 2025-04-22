@@ -99,7 +99,7 @@ jobs:
         echo "===cek versi gcc android==="
         $CROSS_COMPILE"gcc" -v
         which clang || echo "clang not found"
-        make O=$GITHUB_WORKSPACE/out Image CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCC=gcc HOSTCXX=g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=0 2>&1 | tee build.log
+        make O=$GITHUB_WORKSPACE/out Image CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCXX=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=0 2>&1 | tee build.log
 
     - name: Debug output
       run: |
