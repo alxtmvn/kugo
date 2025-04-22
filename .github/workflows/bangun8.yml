@@ -107,8 +107,8 @@ jobs:
         find $GITHUB_WORKSPACE/kernel/arch/arm64/boot -type f
         ls -lh $GITHUB_WORKSPACE/kernel/arch/arm64/boot/
         ls -lh $GITHUB_WORKSPACE/kernel/
-        ls -lh $GITHUB_WORKSPACE/kernel/out
-        ls -lh $GITHUB_WORKSPACE
+        ls -lh $GITHUB_WORKSPACE/kernel/
+        ls -lh $GITHUB_WORKSPACE/out/
 
 
     - name: Upload Build Log
@@ -132,6 +132,7 @@ jobs:
           kernel/*.ko
           kernel/**/*.ko
           kernel/**/*.dtb* 
+          $GITHUB_WORKSPACE/out/arch/arm64/boot/Image*
 
 
 
