@@ -134,6 +134,7 @@ jobs:
           out/arch/arm64/boot/Image
           out/arch/arm64/boot/Image*
           out/arch/arm64/dts/*.dtb*
+          out/arch/arm64/dts/qcom/*.dtb*
           out/System.map
           out/vmlinux
           out/*.ko
