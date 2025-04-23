@@ -126,16 +126,13 @@ jobs:
       with:
         name: kernel-build-output
         path: |
-          kernel/arch/arm64/boot/Image*
-          kernel/System.map
-          kernel/out/arch/arm64/boot/Image*
-          kernel/out/System.map
-          kernel/vmlinux
-          kernel/out/vmlinux
-          kernel/*.ko
-          kernel/**/*.ko
-          kernel/**/*.dtb* 
-          out/
+          out/arch/arm64/boot/Image
+          out/arch/arm64/boot/Image*
+          out/System.map
+          out/vmlinux
+          out/*.ko
+          out/**/*.ko
+          out/**/*.dtb*
 
 
 
