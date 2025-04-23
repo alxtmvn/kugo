@@ -87,6 +87,7 @@ jobs:
         export LD=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-ld
         export CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-
         export CLANG_TRIPLE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-
+        export DTC_FLAGS="-f"
         echo "===Path Rumah: ===" && echo $HOME
         ls -la $HOME
         echo "===Path workspace: ===" && echo $GITHUB_WORKSPACE 
@@ -107,7 +108,7 @@ jobs:
         $CROSS_COMPILE"gcc" -v
         which clang || echo "clang not found" 
         echo "make mrproper"
-        make O=$GITHUB_WORKSPACE/out dtbs ARCH=arm64 CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu- CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCC=/usr/bin/gcc HOSTCXX=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=0 2>&1 | tee build.log
+        make O=$GITHUB_WORKSPACE/out DTC_FLAGS="-f" dtbs ARCH=arm64 CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu- CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCC=/usr/bin/gcc HOSTCXX=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=0 2>&1 | tee build.log
 
     - name: Debug output
       run: |
