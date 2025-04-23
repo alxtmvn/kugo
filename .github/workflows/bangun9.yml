@@ -66,6 +66,7 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_FRAME_POINTER
         scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_STRIP_ASM_SYMS
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_DEBUG_INFO
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_RANDOMIZE_BASE
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_GDB_SCRIPTS
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_MAGIC_SYSRQ
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_KASAN
