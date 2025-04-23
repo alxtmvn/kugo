@@ -80,7 +80,7 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_BLK_DEV_INITRD
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_DEVTMPFS
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_TMPFS
-        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_TMPFS_POSIX_ACL
+        echo "scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_TMPFS_POSIX_ACL"
         make O=$GITHUB_WORKSPACE/out olddefconfig
 
     - name: Build Kernel
