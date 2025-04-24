@@ -57,7 +57,7 @@ jobs:
         git clean -xfd
         make mrproper
         
-        make O=$GITHUB_WORKSPACE/out msm-perf_defconfig
+        make ARCH=arm64 O=$GITHUB_WORKSPACE/out msm-perf_defconfig
 
         ls -l $GITHUB_WORKSPACE/out/.config
 
@@ -80,8 +80,17 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_BLK_DEV_INITRD
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_DEVTMPFS
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_TMPFS
-        echo "scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_TMPFS_POSIX_ACL"
-        make O=$GITHUB_WORKSPACE/out olddefconfig
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_EARLY_PRINTK
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_DEBUG_LL
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_MSM_SERIAL_DEBUGGER
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_DEVTMPFS_MOUNT 
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_PRINTK
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_SERIAL_CORE
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_SERIAL_CORE_CONSOLE
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_PLAT_VERSATILE
+        
+        make ARCH=arm64  O=$GITHUB_WORKSPACE/out olddefconfig
 
     - name: Build Kernel
       run: |
