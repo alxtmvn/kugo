@@ -57,7 +57,7 @@ jobs:
         git clean -xfd
         make mrproper
         
-        make ARCH=arm64 O=$GITHUB_WORKSPACE/out msm-perf_defconfig
+        make ARCH=arm64 O=$GITHUB_WORKSPACE/out defconfig
 
         ls -l $GITHUB_WORKSPACE/out/.config
 
