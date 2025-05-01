@@ -94,8 +94,8 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_VIRTIO_BLK
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_VIRTIO_NET
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_VIRTIO_CONSOLE
-        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_SERIAL_8250
-        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_SERIAL_8250_CONSOLE
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_SERIAL_8250
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_SERIAL_8250_CONSOLE
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_GOLDFISH
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_ANDROID
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_ANDROID_BINDER_IPC
