@@ -107,7 +107,7 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --set-val CONFIG_DEBUG_UART_PHYS 0x09000000
         scripts/config --file $GITHUB_WORKSPACE/out/.config --set-val CONFIG_DEBUG_UART_VIRT 0x09000000
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_DEBUG_UART_PL011
-        scripts/config --file $GITHUB_WORKSPACE/out/.config --setval CONFIG_CONSOLE_LOGLEVEL_DEFAULT 7
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --set-val CONFIG_CONSOLE_LOGLEVEL_DEFAULT 7
         scripts/config --file $GITHUB_WORKSPACE/out/.config --set-str CONFIG_CMDLINE "console=ttyAMA0,115200 earlyprintk"
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_CMDLINE_FORCE
         scripts/config --file $GITHUB_WORKSPACE/out/.config --set-val CONFIG_DEBUG_UART_CLOCK 24000000
