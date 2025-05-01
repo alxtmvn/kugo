@@ -89,7 +89,7 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_SERIAL_CORE
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_SERIAL_CORE_CONSOLE
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_PLAT_VERSATILE
-        scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_VIRTUALIZATION
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_SCHED_HMP
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_VIRTIO_MENU
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_VIRTIO_BLK
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_VIRTIO_NET
