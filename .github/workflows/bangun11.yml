@@ -111,6 +111,7 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --set-str CONFIG_CMDLINE "console=ttyAMA0,115200 earlyprintk"
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_CMDLINE_FORCE
         scripts/config --file $GITHUB_WORKSPACE/out/.config --set-val CONFIG_DEBUG_UART_CLOCK 24000000
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_VIRTUALIZATION
         
         make ARCH=arm64  O=$GITHUB_WORKSPACE/out olddefconfig
 
