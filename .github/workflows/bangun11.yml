@@ -45,7 +45,7 @@ jobs:
       run: |
         cd kernel
         export PATH=$GITHUB_WORKSPACE/toolchains/bin:$PATH
-        echo "export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig'
+        echo "export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig"
         export ARCH=arm64
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-
         export USE_HOST_LEX=1
