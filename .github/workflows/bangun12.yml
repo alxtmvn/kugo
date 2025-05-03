@@ -46,7 +46,7 @@ jobs:
       run: |
         cd kernel
         export PATH=$GITHUB_WORKSPACE/toolchains/bin:$PATH
-        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
+        echo "export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig"
         export ARCH=arm64
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-
         export USE_HOST_LEX=1
@@ -59,8 +59,10 @@ jobs:
         make ARCH=arm64 O=$GITHUB_WORKSPACE/out ranchu_defconfig 
         cp $GITHUB_WORKSPACE/out/.config $GITHUB_WORKSPACE/out/ranchu.config
 
+        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
+
         make ARCH=arm64 O=$GITHUB_WORKSPACE/out msm-perf_defconfig
-        cp $GITHUB_WORKSPACE/out/.config $GITHUB_WORKSPACE/out $GITHUB_WORKSPACE/out/msm-perf.config
+        cp $GITHUB_WORKSPACE/out/.config $GITHUB_WORKSPACE/out/msm-perf.config
 
         ./scripts/kconfig/merge_config.sh -m -O $GITHUB_WORKSPACE/out $GITHUB_WORKSPACE/out/msm-perf.config $GITHUB_WORKSPACE/out/ranchu.config 
 
@@ -75,7 +77,8 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_KASAN
         scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_KASAN_INLINE
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_KASAN_OUTLINE
-        
+
+        unset KBUILD_DIFFCONFIG
         make ARCH=arm64  O=$GITHUB_WORKSPACE/out olddefconfig
         rm -rf $GITHUB_WORKSPACE/out/ranchu.config || echo "ehem"
         rm -rf $GITHUB_WORKSPACE/out/msm-perf.config || echo "ehem2"
