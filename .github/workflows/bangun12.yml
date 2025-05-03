@@ -57,14 +57,14 @@ jobs:
         unset CLANG_TRIPLE
         
         make ARCH=arm64 O=$GITHUB_WORKSPACE/out ranchu_defconfig 
-        cp $GITHUB_WORKSPACE/out/.config $GITHUB_WORKSPACE/out/ranchu.config
+        echo "cp $GITHUB_WORKSPACE/out/.config $GITHUB_WORKSPACE/out/ranchu.config"
 
-        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
+        echo "export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig"
 
-        make ARCH=arm64 O=$GITHUB_WORKSPACE/out msm-perf_defconfig
-        cp $GITHUB_WORKSPACE/out/.config $GITHUB_WORKSPACE/out/msm-perf.config
+        echo "make ARCH=arm64 O=$GITHUB_WORKSPACE/out msm-perf_defconfig"
+        echo "cp $GITHUB_WORKSPACE/out/.config $GITHUB_WORKSPACE/out/msm-perf.config"
 
-        ./scripts/kconfig/merge_config.sh -m -O $GITHUB_WORKSPACE/out $GITHUB_WORKSPACE/out/msm-perf.config $GITHUB_WORKSPACE/out/ranchu.config 
+        echo "./scripts/kconfig/merge_config.sh -m -O $GITHUB_WORKSPACE/out $GITHUB_WORKSPACE/out/msm-perf.config $GITHUB_WORKSPACE/out/ranchu.config" 
 
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_DEBUG_KERNEL
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_KALLSYMS
@@ -91,7 +91,7 @@ jobs:
         export ARCH=arm64
         export PATH=$GITHUB_WORKSPACE/toolchains/bin:$PATH
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-
-        export USE_HOST_LEX=0
+        export USE_HOST_LEX=1
         export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
         export KBUILD_OUTPUT=$GITHUB_WORKSPACE/out
         export HOSTCC=gcc
