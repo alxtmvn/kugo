@@ -56,9 +56,13 @@ jobs:
         unset CC
         unset CLANG_TRIPLE
         
-        make ARCH=arm64 O=$GITHUB_WORKSPACE/out ranchu_defconfig
+        make ARCH=arm64 O=$GITHUB_WORKSPACE/out ranchu_defconfig 
+        cp $GITHUB_WORKSPACE/out/.config $GITHUB_WORKSPACE/out/ranchu.config
 
-        ls -l $GITHUB_WORKSPACE/out/.config
+        make ARCH=arm64 O=$GITHUB_WORKSPACE/out msm-perf_defconfig
+        cp $GITHUB_WORKSPACE/out/.config $GITHUB_WORKSPACE/out $GITHUB_WORKSPACE/out/msm-perf.config
+
+        ./scripts/kconfig/merge_config.sh -m -O $GITHUB_WORKSPACE/out $GITHUB_WORKSPACE/out/msm-perf.config $GITHUB_WORKSPACE/out/ranchu.config 
 
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_DEBUG_KERNEL
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_KALLSYMS
@@ -73,6 +77,9 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_KASAN_OUTLINE
         
         make ARCH=arm64  O=$GITHUB_WORKSPACE/out olddefconfig
+        rm -rf $GITHUB_WORKSPACE/out/ranchu.config || echo "ehem"
+        rm -rf $GITHUB_WORKSPACE/out/msm-perf.config || echo "ehem2"
+        ls -la $GITHUB_WORKSPACE/out
 
     - name: Build Kernel
       run: |
