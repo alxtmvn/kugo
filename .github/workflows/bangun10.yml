@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  clone:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -40,11 +40,7 @@ jobs:
         echo "Toolchain extracted to ~/toolchains"
         mkdir -p $GITHUB_WORKSPACE/out
         
-  build:
-    runs-on: ubuntu-latest
-    needs: clone
 
-    steps:
     - name: Setup Kernel Config
       run: |
         cd kernel
