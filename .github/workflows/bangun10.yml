@@ -92,6 +92,7 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_KDB_DEFAULT_ENABLE
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_VIRTUALIZATION
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_ARCH_VIRT
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_CHR_DEV_SG
         
         make ARCH=arm64  O=$GITHUB_WORKSPACE/out olddefconfig
 
