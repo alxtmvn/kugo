@@ -102,7 +102,7 @@ jobs:
         export PATH=$GITHUB_WORKSPACE/toolchains/bin:$PATH
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-
         export USE_HOST_LEX=0
-        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
+        echo "export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig"
         export KBUILD_OUTPUT=$GITHUB_WORKSPACE/out
         export HOSTCC=gcc
         export HOSTLDFLAGS="-fcommon"
