@@ -102,6 +102,10 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_PREEMPT
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_SCHED_MC
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_HOTPLUG_CPU
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_CGROUPS
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_CGROUP_FREEZER
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_CGROUPT_CPUACCT
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_SCHEDSTATS
         
         make ARCH=arm64  O=$GITHUB_WORKSPACE/out olddefconfig
 
