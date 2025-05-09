@@ -90,7 +90,7 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_KGDB_SERIAL_CONSOLE
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_KDB
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_KDB_DEFAULT_ENABLE
-        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_VIRTUALIZATION
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_VIRTUALIZATION
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_ARCH_VIRT
         echo "scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_CHR_DEV_SG"
         
