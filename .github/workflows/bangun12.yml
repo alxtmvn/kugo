@@ -121,7 +121,7 @@ jobs:
         $CROSS_COMPILE"gcc" -v
         which clang || echo "clang not found" 
         echo "make mrproper"
-        make O=$GITHUB_WORKSPACE/out Image ARCH=arm64 CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu- CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCC=/usr/bin/gcc HOSTCXX=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" -j$(nproc) V=0 2>&1 | tee build.log
+        make O=$GITHUB_WORKSPACE/out Image ARCH=arm64 CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu- CC=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-gcc HOSTCC=/usr/bin/gcc HOSTCXX=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-g++ HOSTCFLAGS="-fcommon" HOSTLDFLAGS="-fcommon" KCFLAGS=-Wno-error=implicit-function-declaration -j$(nproc) V=0 2>&1 | tee build.log
 
     - name: Debug output
       run: |
