@@ -39,7 +39,7 @@ jobs:
         ls -la bin
         echo "Toolchain extracted to ~/toolchains"
         mkdir -p $GITHUB_WORKSPACE/out
-        wget https://github.com/alxtmvn/kugo/raw/refs/heads/main/baru_defconfig -O $GITHUB_WORKSPACE/kernel/arch/arm64/configs/baru_defconfig
+        wget https://github.com/alxtmvn/kugo/raw/refs/heads/main/msmp-perf_defconfig -O $GITHUB_WORKSPACE/kernel/arch/arm64/configs/baru_defconfig
         
 
     - name: Setup Kernel Config
@@ -56,7 +56,7 @@ jobs:
         unset CC
         unset CLANG_TRIPLE
         
-        make ARCH=arm64 O=$GITHUB_WORKSPACE/out baru_defconfig 
+        make ARCH=arm64 O=$GITHUB_WORKSPACE/out msmp-perf_defconfig 
         echo "cp $GITHUB_WORKSPACE/out/.config $GITHUB_WORKSPACE/out/ranchu.config"
 
         echo "export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig"
