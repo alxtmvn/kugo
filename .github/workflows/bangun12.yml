@@ -39,7 +39,7 @@ jobs:
         ls -la bin
         echo "Toolchain extracted to ~/toolchains"
         mkdir -p $GITHUB_WORKSPACE/out
-        wget https://github.com/alxtmvn/kugo/raw/refs/heads/main/baru_defconfig -O $GITHUB_WORKSPACE/kernel/arch/arm64/configs/ranchu_defconfig
+        wget https://github.com/alxtmvn/kugo/raw/refs/heads/main/baru_defconfig -O $GITHUB_WORKSPACE/kernel/arch/arm64/configs/baru_defconfig
         
 
     - name: Setup Kernel Config
