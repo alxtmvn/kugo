@@ -39,7 +39,7 @@ jobs:
         ls -la bin
         echo "Toolchain extracted to ~/toolchains"
         mkdir -p $GITHUB_WORKSPACE/out
-        wget https://raw.githubusercontent.com/daemory/ranchu-kernel/refs/heads/android-aarch64-ranchu-3.10/arch/arm64/configs/ranchu_defconfig -O $GITHUB_WORKSPACE/kernel/arch/arm64/configs/ranchu_defconfig
+        wget https://github.com/alxtmvn/kugo/raw/refs/heads/main/baru_defconfig -O $GITHUB_WORKSPACE/kernel/arch/arm64/configs/ranchu_defconfig
         
 
     - name: Setup Kernel Config
@@ -56,7 +56,7 @@ jobs:
         unset CC
         unset CLANG_TRIPLE
         
-        make ARCH=arm64 O=$GITHUB_WORKSPACE/out ranchu_defconfig 
+        make ARCH=arm64 O=$GITHUB_WORKSPACE/out baru_defconfig 
         echo "cp $GITHUB_WORKSPACE/out/.config $GITHUB_WORKSPACE/out/ranchu.config"
 
         echo "export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig"
@@ -77,12 +77,12 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_KASAN
         scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_KASAN_INLINE
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_KASAN_OUTLINE
-        scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_SCHED_HMP
+        echo "scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_SCHED_HMP"
 
         unset KBUILD_DIFFCONFIG
         make ARCH=arm64  O=$GITHUB_WORKSPACE/out olddefconfig
-        rm -rf $GITHUB_WORKSPACE/out/ranchu.config || echo "ehem"
-        rm -rf $GITHUB_WORKSPACE/out/msm-perf.config || echo "ehem2"
+        echo "rm -rf $GITHUB_WORKSPACE/out/ranchu.config || echo "ehem" "
+        echo "rm -rf $GITHUB_WORKSPACE/out/msm-perf.config || echo "ehem2" "
         ls -la $GITHUB_WORKSPACE/out
 
     - name: Build Kernel
@@ -92,7 +92,7 @@ jobs:
         export PATH=$GITHUB_WORKSPACE/toolchains/bin:$PATH
         export CROSS_COMPILE=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-
         export USE_HOST_LEX=1
-        export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig
+        echo "export KBUILD_DIFFCONFIG=kugo_dcm_diffconfig"
         export KBUILD_OUTPUT=$GITHUB_WORKSPACE/out
         export HOSTCC=gcc
         export HOSTLDFLAGS="-fcommon"
