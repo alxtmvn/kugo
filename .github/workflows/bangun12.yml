@@ -79,6 +79,7 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_KASAN_OUTLINE
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_SCHED_HMP
         scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_CLK_VEXPRESS
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_ARM_GIC_V2
 
         unset KBUILD_DIFFCONFIG
         make ARCH=arm64  O=$GITHUB_WORKSPACE/out olddefconfig
