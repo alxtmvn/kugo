@@ -80,6 +80,9 @@ jobs:
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_SCHED_HMP
         scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_CLK_VEXPRESS
         scripts/config --file $GITHUB_WORKSPACE/out/.config --enable CONFIG_ARM_GIC_V2
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_ARM_GIC_V3
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_ARM_GIC_V3_ITS
+        scripts/config --file $GITHUB_WORKSPACE/out/.config --disable CONFIG_ARM_GIC
 
         unset KBUILD_DIFFCONFIG
         make ARCH=arm64  O=$GITHUB_WORKSPACE/out olddefconfig
