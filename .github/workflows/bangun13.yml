@@ -27,7 +27,9 @@ jobs:
 
     - name: Clone Kernel Source
       run: |
-        git clone --depth=1 https://github.com/sonyxperiadev/kernel-copyleft -b 34.4.B.0.xxx kernel
+        git clone --depth=1 https://github.com/sonyxperiadev/kernel-copyleft -b 34.4.B.0.xxx kernel 
+        sed -i 's/IRQCHIP_DECLARE(msm_qgic2, "qcom,msm-qgic2", msm_gic_of_init);/IRQCHIP_DECLARE(gic_400, "arm,gic-400", gic_of_init);/g' $GITHUB_WORKSPACE/kernel/drivers/irqchip/irq-gic.c 
+        grep -A 2 "IRQCHIP_DECLARE" $GITHUB_WORKSPACE/kernel/drivers/irqchip/irq-gic.c | grep -i "gic-400"
 
     - name: Download GCC 4.9 Toolchain
       run: |
