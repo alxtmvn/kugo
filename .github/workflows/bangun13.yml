@@ -51,6 +51,7 @@ jobs:
         export HOSTCC=gcc
         export LD=$GITHUB_WORKSPACE/toolchains/bin/aarch64-linux-gnu-ld 
         export KBUILD_OUTPUT=$GITHUB_WORKSPACE/out
+        export KCFLAGS="-Wno-maybe-uninitialized"
         unset CC
         unset CLANG_TRIPLE
 
