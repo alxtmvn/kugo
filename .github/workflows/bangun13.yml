@@ -88,6 +88,9 @@ jobs:
           out/System.map
           out/vmlinux
           out/.config
+          out/build.log
+          kernel/.config
+          kernel/build.log
           out/*.ko
           out/**/*.ko
           out/**/*.dtb*
