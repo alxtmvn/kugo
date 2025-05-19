@@ -57,7 +57,7 @@ jobs:
         unset CC
         unset CLANG_TRIPLE
 
-        make ARCH=arm64 O=$GITHUB_WORKSPACE/out baru2-new_defconfig
+        make ARCH=arm64 O=$GITHUB_WORKSPACE/out baru2-new_defconfig && cp $GITHUB_WORKSPACE/out/.config $GITHUB_WORKSPACE
 
     - name: Build Kernel
       run: |
@@ -90,7 +90,8 @@ jobs:
           out/.config
           out/build.log
           kernel/.config
-          kernel/build.log
+          kernel/build.log 
+          $GITHUB_WORKSPACE/.config
           out/*.ko
           out/**/*.ko
           out/**/*.dtb*
